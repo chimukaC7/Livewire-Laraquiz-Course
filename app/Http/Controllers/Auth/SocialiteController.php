@@ -27,10 +27,21 @@ class SocialiteController extends Controller
 
         $response = Socialite::driver($provider)->user();
 
-        $user = User::firstOrCreate(
+//        $user = User::firstOrCreate(
+//            ['email' => $response->getEmail()],
+//            ['password' => Str::password()]
+//        );
+
+        $user = User::updateOrCreate(
             ['email' => $response->getEmail()],
-            ['password' => Str::password()]
+            [
+                'password' => Str::password(),
+                'name' => $response->getName() ?? $response->getNickname,
+                $provider . '_id' => $response->getId()
+            ]
         );
+
+
         $data = [$provider . '_id' => $response->getId()];
 
         if ($user->wasRecentlyCreated) {

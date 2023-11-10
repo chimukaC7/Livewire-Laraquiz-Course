@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            //users migrations, we need to set default for name field, because users name will be updated after being created.
             $table->string('name')->default('');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
